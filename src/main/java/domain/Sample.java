@@ -28,7 +28,7 @@ class MarioSample implements SampleStateModel {
     byte[][] enemies = environment.getEnemiesObservationZ(2);
 
     return new MarioState(
-      status, kills, mode,
+      status, mode, kills,
       pos[0], pos[1],
       new ModeState(mode, "mode"),
       new DirectionState(0, s.x, s.y, pos[0], pos[1], "dir"),
@@ -47,7 +47,7 @@ class MarioSample implements SampleStateModel {
     }
 
     initialState = new MarioState(
-      2, 0, 1, 0, 0,
+      2, 1, 0, 0, 0,
       new ModeState(1, "mode"),
       new DirectionState(0, 0, 0, 0, 0, "dir"),
       new PitsState(0, 0, level, "pits"),
