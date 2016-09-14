@@ -1,0 +1,16 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'main.Main'
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'edu.brown.cs.burlap:burlap:3.0.0'
+  compile fileTree(dir: 'lib', include: ['*.jar'])
+}
