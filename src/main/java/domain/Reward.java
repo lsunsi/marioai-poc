@@ -11,7 +11,11 @@ class MarioReward implements RewardFunction {
   }
 
   double reward(MarioState s0, MarioAction a, MarioState s1) {
-    double dx = s1.x - s0.x, dy = s0.y - s1.y;
-    return dx;
+    double dx = s1.x - s0.x;
+    return (
+      + (s1.status == 1 ? +100:0)
+      + (s1.status == 0 ? -100:0)
+      + (dx > 1 ? 1 : -1)
+    );
   }
 }

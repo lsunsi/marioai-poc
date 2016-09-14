@@ -22,7 +22,9 @@ class Main {
     double lambda  = .99;
 
     MarioTableSarsa agent = new MarioTableSarsa(task.domain, alpha, gamma, epsilon, lambda);
-    task.train(agent, 1000);
+    task.train(agent, 10000);
     task.play(agent);
+
+    System.exit(0);
   }
 }

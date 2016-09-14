@@ -27,8 +27,8 @@ class Task {
       menv.reset(options);
       senv.resetEnvironment();
       Episode e = agent.runLearningEpisode(senv);
-      System.out.println(i + ": " + e.maxTimeStep());
-      // e.write(path + "_" + i);
+      double reward = e.rewardSequence.stream().parallel().mapToDouble(Double::doubleValue).sum();
+      System.out.println(i + " " + menv.getMarioStatus() + " " + e.maxTimeStep() + " " + reward);
     }
   }
 
