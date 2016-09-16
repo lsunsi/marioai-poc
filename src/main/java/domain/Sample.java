@@ -50,10 +50,10 @@ class MarioSample implements SampleStateModel {
       2, 1, 0, 0, 0,
       new ModeState(1, "mode"),
       new DirectionState(0, 0, 0, 0, 0, "dir"),
-      new PitsState(0, 0, level, "pits"),
-      new RadarState(0, 0, level, "radar"),
-      new LevelState(0, 0, 0, 0, level, "scene"),
-      new LevelState(0, 0, 0, 0, level, "enemies")
+      new PitsState(2, 2, level, "pits"),
+      new RadarState(3, 3, level, "radar"),
+      new LevelState(1, 1, 1, 1, level, "scene"),
+      new LevelState(1, 1, 1, 1, level, "enemies")
     );
   }
 }
