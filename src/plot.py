@@ -1,13 +1,15 @@
 import matplotlib.pyplot as plt
 import scipy.signal as sig
 import numpy as np
+import sys
 
 labels  = []
 states  = []
 steps   = []
 rewards = []
 
-with open('logs') as f:
+# reading input
+with open(sys.argv[1]) as f:
   for line in f.readlines():
     cols = line.split()
     if len(cols) == 4:
@@ -20,27 +22,20 @@ with open('logs') as f:
       except:
         pass
 
-nstates = np.array(states)
-winrates = [np.average(nstates[:i+1]) for i in range(len(nstates))]
-
+# smoothing
 window_size = len(labels)//10 - 1
 smoothed_rewards = sig.savgol_filter(rewards, window_size, 1)
+smoothed_states  = sig.savgol_filter(states,  window_size, 1)
 
-win_rewards = [r for (s, r) in zip(states, rewards) if s == 1]
-minwinreward = np.amin(win_rewards)
-meanwinreward = np.average(win_rewards)
-
+# plotting
 _, ax1 = plt.subplots()
-ax1.plot(labels, smoothed_rewards, 'r')
-ax1.plot(labels, [meanwinreward for _ in labels], 'k')
+l1 = ax1.plot(labels, smoothed_rewards, 'r', label='reward')
 
 ax2 = ax1.twinx()
 ax2.set_ylim([0, 1])
-ax2.plot(labels, winrates, 'k')
+l2 = ax2.plot(labels, smoothed_states, 'k', label='winrate')
 
-print("meanstates", np.average(states))
-print("meanrewards", np.average(rewards))
-print("minwinreward", minwinreward)
-print("meanwinreward", meanwinreward)
-
+# showing
+lns = l1+l2
+ax1.legend(lns, [l.get_label() for l in lns], loc=4)
 plt.show()

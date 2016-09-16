@@ -8,12 +8,14 @@ import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 import burlap.mdp.singleagent.environment.SimulatedEnvironment;
 
 class Task {
+  int stepsize;
   MarioDomain domain;
   MarioAIOptions options;
   MarioEnvironment menv;
   SimulatedEnvironment senv;
 
-  Task(MarioAIOptions options) {
+  Task(MarioAIOptions options, int stepsize) {
+    this.stepsize = stepsize;
     this.options = options;
     menv = MarioEnvironment.getInstance();
     domain = new MarioDomain(menv);
@@ -40,8 +42,8 @@ class Task {
     }
   }
 
-  void learn(LearningAgent agent, int stepsize, Scanner in) {
-    int credits = in.nextInt();
+  void learn(LearningAgent agent, Scanner in, int init) {
+    int credits = init;
     for (int i=0; credits > 0; i++) {
       train(agent, i*stepsize, (i+1)*stepsize);
       credits -= 1;
