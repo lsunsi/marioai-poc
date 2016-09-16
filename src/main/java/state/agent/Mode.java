@@ -9,17 +9,26 @@ import burlap.mdp.core.state.annotations.DeepCopyState;
 
 @DeepCopyState
 class ModeState implements State, ObjectInstance {
-  final static String[] keys = {"mode"};
+  final static String[] keys = {"small", "large", "fire"};
   final static String className = "ModeState";
 
   String name;
-  int mode;
+  boolean small, large, fire;
 
   // Constructors
 
   ModeState(int mode, String name) {
-    this.mode = mode;
     this.name = name;
+    small = mode==0;
+    large = mode==1;
+    fire  = mode==2;
+  }
+
+  ModeState(ModeState state, String name) {
+    this.name = name;
+    small = state.small;
+    large = state.large;
+    fire  = state.fire;
   }
 
   // State implementation
@@ -31,13 +40,15 @@ class ModeState implements State, ObjectInstance {
 
   @Override
   public Object get(Object key) {
-    if (keys[0].equals(key)) return mode;
+    if (keys[0].equals(key)) return small;
+    if (keys[1].equals(key)) return large;
+    if (keys[2].equals(key)) return fire;    
     throw new UnknownKeyException(key);
   }
 
   @Override
   public State copy() {
-    return new ModeState(mode, name);
+    return new ModeState(this, name);
   }
 
   // ObjectInstance implementation
@@ -54,6 +65,6 @@ class ModeState implements State, ObjectInstance {
 
   @Override
   public ObjectInstance copyWithName(String name) {
-    return new ModeState(mode, name);
+    return new ModeState(this, name);
   }
 }

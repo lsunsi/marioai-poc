@@ -45,7 +45,7 @@ class RadarState implements State, ObjectInstance {
 
   @Override
   public Object get(Object key) {
-    return values[(Integer)key]==0?0:1;
+    return values[(Integer)key]==0?false:true;
   }
 
   @Override
