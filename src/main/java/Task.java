@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Scanner;
 import ch.idsia.tools.MarioAIOptions;
 import burlap.behavior.singleagent.Episode;
 import burlap.behavior.singleagent.learning.LearningAgent;
@@ -21,9 +22,16 @@ class Task {
     );
   }
 
-  void train(LearningAgent agent, int episodes) {
+  void play(LearningAgent agent) {
+    options.setVisualization(true);
+    menv.reset(options);
+    senv.resetEnvironment();
+    agent.runLearningEpisode(senv);
+  }
+
+  void train(LearningAgent agent, int start, int end) {
     options.setVisualization(false);
-    for (int i=0; i<episodes; i++) {
+    for (int i=start; i<end; i++) {
       menv.reset(options);
       senv.resetEnvironment();
       Episode e = agent.runLearningEpisode(senv);
@@ -32,10 +40,17 @@ class Task {
     }
   }
 
-  void play(LearningAgent agent) {
-    options.setVisualization(true);
-    menv.reset(options);
-    senv.resetEnvironment();
-    agent.runLearningEpisode(senv);
+  void learn(LearningAgent agent, int stepsize, Scanner in) {
+    int credits = in.nextInt();
+    for (int i=0; credits > 0; i++) {
+      train(agent, i*stepsize, (i+1)*stepsize);
+      credits -= 1;
+      if (credits == 0) {
+        do {
+          play(agent);
+          credits = in.nextInt();
+        } while (credits == -1);
+      }
+    }
   }
 }

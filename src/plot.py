@@ -21,15 +21,17 @@ with open('logs') as f:
       except:
         pass
 
+window_size = len(labels)//10 - 1
+smoothed_rewards = sig.savgol_filter(rewards, window_size, 1)
+plt.plot(labels, smoothed_rewards)
+
 win_rewards = []
 for s, r in zip(states, rewards):
   if s == 1:
     win_rewards.append(r)
 meanwinreward = np.average(win_rewards)
-
 plt.plot(labels, [meanwinreward for _ in labels])
-plt.plot(labels, sig.savgol_filter(rewards, 99, 1), label='reward')
-print(np.average(states))
 
-plt.legend()
+print(np.average(states))
+print(meanwinreward)
 plt.show()
