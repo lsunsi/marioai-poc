@@ -32,10 +32,10 @@ class MarioSample implements SampleStateModel {
       pos[0], pos[1],
       new ModeState(mode, "mode"),
       new DirectionState(0, s.x, s.y, pos[0], pos[1], "dir"),
-      new PitsState(2, 2, scene, "pits"),
-      new RadarState(3, 3, enemies, "radar"),
-      new LevelState(1, 1, 1, 1, scene, "scene"),
-      new LevelState(1, 1, 1, 1, enemies, "enemies")
+      new PitsState(3, 3, scene, "pits"),
+      new RadarState(2, 3, enemies, "radar"),
+      new LevelState(2, 2, 2, 2, scene, "scene"),
+      new LevelState(2, 2, 2, 2, enemies, "enemies")
     );
   }
 
@@ -50,10 +50,10 @@ class MarioSample implements SampleStateModel {
       2, 1, 0, 0, 0,
       new ModeState(1, "mode"),
       new DirectionState(0, 0, 0, 0, 0, "dir"),
-      new PitsState(2, 2, level, "pits"),
-      new RadarState(3, 3, level, "radar"),
-      new LevelState(1, 1, 1, 1, level, "scene"),
-      new LevelState(1, 1, 1, 1, level, "enemies")
+      new PitsState(3, 3, level, "pits"),
+      new RadarState(2, 3, level, "radar"),
+      new LevelState(2, 2, 2, 2, level, "scene"),
+      new LevelState(2, 2, 2, 2, level, "enemies")
     );
   }
 }
