@@ -8,8 +8,8 @@ import burlap.mdp.core.state.UnknownKeyException;
 import burlap.mdp.core.state.annotations.DeepCopyState;
 
 @DeepCopyState
-class DirectionState implements State, ObjectInstance {
-  final static String[] keys = {"dxpos", "dxneg", "dypos", "dyneg"};  
+class DirectionState implements State, ObjectInstance, Featurable {
+  final static String[] keys = {"dxpos", "dxneg", "dypos", "dyneg"};
   final static String className = "DirectionState";
 
   String name;
@@ -32,7 +32,18 @@ class DirectionState implements State, ObjectInstance {
     dxpos = state.dxpos;
     dxneg = state.dxneg;
     dypos = state.dypos;
-    dyneg = state.dyneg;    
+    dyneg = state.dyneg;
+  }
+
+  // Featurable implementation
+
+  public double[] getFeatures() {
+    return new double[]{
+      dxpos?0:1,
+      dxneg?0:1,
+      dypos?0:1,
+      dyneg?0:1
+    };
   }
 
   // State implementation
@@ -47,7 +58,7 @@ class DirectionState implements State, ObjectInstance {
     if (keys[0].equals(key)) return dxpos;
     if (keys[1].equals(key)) return dxneg;
     if (keys[2].equals(key)) return dypos;
-    if (keys[3].equals(key)) return dyneg;   
+    if (keys[3].equals(key)) return dyneg;
     throw new UnknownKeyException(key);
   }
 

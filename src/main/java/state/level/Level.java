@@ -7,7 +7,7 @@ import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.state.annotations.DeepCopyState;
 
 @DeepCopyState
-class LevelState implements State, ObjectInstance {
+class LevelState implements State, ObjectInstance, Featurable {
   final static String className = "LevelState";
   final static int[] center = {9, 9};
 
@@ -32,8 +32,16 @@ class LevelState implements State, ObjectInstance {
 
   LevelState(LevelState state, String name) {
     values = state.values.clone();
-    size = state.size;        
+    size = state.size;
     this.name = name;
+  }
+
+  // Featurable implementation
+
+  public double[] getFeatures() {
+    double[] features = new double[values.length];
+    for (int i=0; i<features.length; i++) features[i] = values[i]?0:1;
+    return features;
   }
 
   // State implementation

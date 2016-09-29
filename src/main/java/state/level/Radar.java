@@ -7,7 +7,7 @@ import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.state.annotations.DeepCopyState;
 
 @DeepCopyState
-class RadarState implements State, ObjectInstance {
+class RadarState implements State, ObjectInstance, Featurable {
   final static String className = "RadarState";
   final static int[] center = {9, 9};
   final static int size = 8;
@@ -32,6 +32,14 @@ class RadarState implements State, ObjectInstance {
   RadarState(RadarState state, String name) {
     values = state.values.clone();
     this.name = name;
+  }
+
+  // Featurable implementation
+
+  public double[] getFeatures() {
+    double[] features = new double[values.length];
+    for (int i=0; i<features.length; i++) features[i] = values[i]==0?0:1;
+    return features;
   }
 
   // State implementation

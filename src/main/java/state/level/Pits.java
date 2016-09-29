@@ -6,13 +6,13 @@ import burlap.mdp.core.state.State;
 import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.state.annotations.DeepCopyState;
 
-class PitsState implements State, ObjectInstance {
+class PitsState implements State, ObjectInstance, Featurable {
   final static String className = "PitsState";
   final static int[] center = {9, 9};
   final static int bottom = 18;
 
   int size;
-  String name;  
+  String name;
   boolean[] values;
 
   // Constructors
@@ -34,6 +34,14 @@ class PitsState implements State, ObjectInstance {
     this.name = name;
     size = state.size;
     values = state.values.clone();
+  }
+
+  // Featurable implementation
+
+  public double[] getFeatures() {
+    double[] features = new double[values.length];
+    for (int i=0; i<features.length; i++) features[i] = values[i]?0:1;
+    return features;
   }
 
   // State implementation

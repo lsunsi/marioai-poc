@@ -8,7 +8,7 @@ import burlap.mdp.core.state.UnknownKeyException;
 import burlap.mdp.core.state.annotations.DeepCopyState;
 
 @DeepCopyState
-class ModeState implements State, ObjectInstance {
+class ModeState implements State, ObjectInstance, Featurable {
   final static String[] keys = {"small", "large", "fire"};
   final static String className = "ModeState";
 
@@ -31,6 +31,16 @@ class ModeState implements State, ObjectInstance {
     fire  = state.fire;
   }
 
+  // Featurable implementation
+
+  public double[] getFeatures() {
+    return new double[]{
+      small?0:1,
+      large?0:1,
+      fire?0:1
+    };
+  }
+
   // State implementation
 
   @Override
@@ -42,7 +52,7 @@ class ModeState implements State, ObjectInstance {
   public Object get(Object key) {
     if (keys[0].equals(key)) return small;
     if (keys[1].equals(key)) return large;
-    if (keys[2].equals(key)) return fire;    
+    if (keys[2].equals(key)) return fire;
     throw new UnknownKeyException(key);
   }
 

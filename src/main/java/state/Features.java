@@ -4,7 +4,18 @@ import java.util.ArrayList;
 import burlap.mdp.core.state.State;
 import burlap.behavior.functionapproximation.dense.DenseStateFeatures;
 
+interface Featurable {
+  double[] getFeatures();
+}
+
 class MarioFeatures implements DenseStateFeatures {
+  static int size;
+  static {
+    for (Object f : MarioSample.initialState.objects()) {
+      size += ((Featurable)f).getFeatures().length;
+    }
+  }
+
   double[] values;
 
   MarioFeatures() {}
@@ -14,18 +25,15 @@ class MarioFeatures implements DenseStateFeatures {
 
   @Override
   public double[] features(State root) {
-    ArrayList<Integer> flist = new ArrayList<>();
-    for (Object k1 : root.variableKeys()) {
-      State branch = (State)root.get(k1);
-      for (Object k2 : branch.variableKeys()) {
-        Boolean leaf = (Boolean)branch.get(k2);
-        flist.add(leaf?0:1);
+    values = new double[size];
+
+    int i = 0;
+    for (Object o : ((MarioState)root).objects()) {
+      for (double f : ((Featurable)o).getFeatures()) {
+        values[i++] = f;
       }
     }
-    values = flist
-      .stream()
-      .mapToDouble(Integer::doubleValue)
-      .toArray();
+
     return values;
   }
 
