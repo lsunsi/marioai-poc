@@ -31,29 +31,68 @@ class MarioSample implements SampleStateModel {
       status, mode, kills,
       pos[0], pos[1],
       new ModeState(mode, "mode"),
-      new DirectionState(0, s.x, s.y, pos[0], pos[1], "dir"),
-      new PitsState(3, 3, scene, "pits"),
-      new RadarState(2, 3, enemies, "radar"),
-      new LevelState(2, 2, 2, 2, scene, "scene"),
-      new LevelState(2, 2, 2, 2, enemies, "enemies")
+      new DirectionState(
+        ModelOptions.posTolerance,
+        s.x, s.y, pos[0], pos[1], "dir"),
+      new PitsState(
+        ModelOptions.pitsLeft,
+        ModelOptions.pitsRight,
+        scene, "pits"),
+      new RadarState(
+        ModelOptions.radarOffset,
+        ModelOptions.radarThickness,
+        enemies, "radar"),
+      new LevelState(
+        ModelOptions.sceneLeft,
+        ModelOptions.sceneRight,
+        ModelOptions.sceneUp,
+        ModelOptions.sceneDown,
+        scene, "scene"),
+      new LevelState(
+        ModelOptions.enemiesLeft,
+        ModelOptions.enemiesRight,
+        ModelOptions.enemiesUp,
+        ModelOptions.enemiesDown,
+        enemies, "enemies")
     );
   }
 
   final static MarioState initialState;
   static {
-    byte[][] level = new byte[19][19];
-    for (int i=0; i<19; i++) {
-      level[i] = new byte[19];
-    }
-
     initialState = new MarioState(
-      2, 1, 0, 0, 0,
-      new ModeState(1, "mode"),
-      new DirectionState(0, 0, 0, 0, 0, "dir"),
-      new PitsState(3, 3, level, "pits"),
-      new RadarState(2, 3, level, "radar"),
-      new LevelState(2, 2, 2, 2, level, "scene"),
-      new LevelState(2, 2, 2, 2, level, "enemies")
+      ModelOptions.initialStatus,
+      ModelOptions.initialMode,
+      ModelOptions.initialKills,
+      ModelOptions.initialPos[0],
+      ModelOptions.initialPos[1],
+      new ModeState(
+        ModelOptions.initialMode, "mode"),
+      new DirectionState(
+        ModelOptions.posTolerance,
+        ModelOptions.initialPos[0],
+        ModelOptions.initialPos[1],
+        ModelOptions.initialPos[0],
+        ModelOptions.initialPos[1], "dir"),
+      new PitsState(
+        ModelOptions.pitsLeft,
+        ModelOptions.pitsRight,
+        ModelOptions.initialLevel, "pits"),
+      new RadarState(
+        ModelOptions.radarOffset,
+        ModelOptions.radarThickness,
+        ModelOptions.initialLevel, "radar"),
+      new LevelState(
+        ModelOptions.sceneLeft,
+        ModelOptions.sceneRight,
+        ModelOptions.sceneUp,
+        ModelOptions.sceneDown,
+        ModelOptions.initialLevel, "scene"),
+      new LevelState(
+        ModelOptions.enemiesLeft,
+        ModelOptions.enemiesRight,
+        ModelOptions.enemiesUp,
+        ModelOptions.enemiesDown,
+        ModelOptions.initialLevel, "enemies")
     );
   }
 }
