@@ -1,37 +1,42 @@
 package main;
 
-import java.util.Scanner;
+import java.util.Random;
 import ch.idsia.tools.MarioAIOptions;
 import burlap.behavior.singleagent.learning.LearningAgent;
 
 class Main {
   public static void main(String[] args) {
     MarioAIOptions options = new MarioAIOptions();
-    options.setLevelDifficulty(1);
-    options.setLevelRandSeed(7);
-    options.setLevelLength(100);
+    options.setLevelDifficulty(2);
+    options.setLevelRandSeed(123);
+    options.setLevelLength(50);
     options.setArgs("-lca off");
     options.setArgs("-lco off");
     options.setArgs("-ltb off");
     options.setEnemies("g,rk");
     options.setMarioMode(1);
 
-    int stepsize = 10000;
-    Scanner in = new Scanner(System.in);
-    Task task = new Task(options, stepsize);;
+    Random random = new Random();
+    Task task = new Task(options);
 
-    double alpha   = .01;
-    double gamma   = .99;
-    double epsilon = .01;
-    double lambda  = .99;
-    double weight  = .50;
+    int sessions = 3;
+    int episodes = 1000;
 
-    LearningAgent agent = MarioFuncSarsa.generate(
-      task.domain, alpha, gamma, epsilon, lambda, weight
-    );
+    for (;;) {
+      double alpha   = random.nextDouble();
+      double gamma   = random.nextDouble();
+      double epsilon = random.nextDouble();
+      double lambda  = random.nextDouble();
 
-    task.learn(agent, in, 1);
+      LearningAgent[] agents = new LearningAgent[sessions];
+      for (int i=0; i<sessions; i++) agents[i] = MarioFuncSarsa.generate(
+        task.domain, alpha, gamma, epsilon, lambda
+      );
 
-    System.exit(0);
+      double benchmark = task.benchmark(agents, episodes);
+      System.out.printf("%f %f %f %f %f\n", alpha, gamma, epsilon, lambda, benchmark);
+    }
+
+    // System.exit(0);
   }
 }
