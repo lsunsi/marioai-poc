@@ -1,12 +1,12 @@
 package main;
 
 import java.util.Random;
-import java.util.function.ToDoubleFunction;
+import java.util.function.Consumer;
 
 class RandomParameterOptimizer extends BaseParameterOptimizer {
   Random random;
 
-  RandomParameterOptimizer(ToDoubleFunction<ParameterContainer> benchmark) {
+  RandomParameterOptimizer(Consumer<ParameterContainer> benchmark) {
     super(benchmark);
     random = new Random();
   }

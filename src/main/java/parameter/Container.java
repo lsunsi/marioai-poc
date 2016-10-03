@@ -67,15 +67,8 @@ class ParameterContainer {
   @Override
   public String toString() {
     return String.format(
-      "%f %f %f %f",
-      alpha, gamma, epsilon, lambda
-    );
-  }
-
-  public String toStringWithFitness() {
-    return String.format(
-      "(%s) -> %f",
-      this.toString(), fitness
+      "(%f %f %f %f) -> %f",
+      alpha, gamma, epsilon, lambda, fitness
     );
   }
 }

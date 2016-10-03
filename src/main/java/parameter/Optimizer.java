@@ -2,7 +2,7 @@ package main;
 
 import java.util.Set;
 import java.util.HashSet;
-import java.util.function.ToDoubleFunction;
+import java.util.function.Consumer;
 
 interface ParameterOptimizer {
   ParameterContainer[] all();
@@ -12,20 +12,19 @@ interface ParameterOptimizer {
 }
 
 abstract class BaseParameterOptimizer implements ParameterOptimizer {
-  ToDoubleFunction<ParameterContainer> benchmark;
+  Consumer<ParameterContainer> benchmark;
   Set<ParameterContainer> containers;
   boolean done;
 
-  BaseParameterOptimizer(ToDoubleFunction<ParameterContainer> benchmark) {
+  BaseParameterOptimizer(Consumer<ParameterContainer> benchmark) {
     this.containers = new HashSet<>();
     this.benchmark = benchmark;
     done = false;
   }
 
-  double append(ParameterContainer container) {
-    container.fitness = benchmark.applyAsDouble(container);
+  void append(ParameterContainer container) {
+    benchmark.accept(container);
     containers.add(container);
-    return container.fitness;
   }
 
   @Override

@@ -1,6 +1,7 @@
 package main;
 
 import java.util.Random;
+import java.util.Arrays;
 import ch.idsia.tools.MarioAIOptions;
 import burlap.behavior.singleagent.learning.LearningAgent;
 
@@ -22,21 +23,17 @@ class Main {
     int sessions = 3;
     int episodes = 1000;
 
-    for (;;) {
-      double alpha   = random.nextDouble();
-      double gamma   = random.nextDouble();
-      double epsilon = random.nextDouble();
-      double lambda  = random.nextDouble();
+    ParameterOptimizer po = new GridParameterOptimizer(0.5,
+      pc -> {
+        pc.fitness = task.benchmark(new MarioFuncSarsaGenerator(
+          task.domain, pc.alpha, pc.gamma, pc.epsilon, pc.lambda
+        ), sessions, episodes);
+        System.out.println(pc);
+      }
+    );
 
-      LearningAgent[] agents = new LearningAgent[sessions];
-      for (int i=0; i<sessions; i++) agents[i] = MarioFuncSarsa.generate(
-        task.domain, alpha, gamma, epsilon, lambda
-      );
+    while (!po.done()) po.iterate();
 
-      double benchmark = task.benchmark(agents, episodes);
-      System.out.printf("%f %f %f %f %f\n", alpha, gamma, epsilon, lambda, benchmark);
-    }
-
-    // System.exit(0);
+    System.exit(0);
   }
 }

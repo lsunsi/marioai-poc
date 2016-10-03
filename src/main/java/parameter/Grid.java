@@ -1,12 +1,12 @@
 package main;
 
-import java.util.function.ToDoubleFunction;
+import java.util.function.Consumer;
 
 class GridParameterOptimizer extends BaseParameterOptimizer {
   ParameterContainer current;
   double step;
 
-  GridParameterOptimizer(double step, ToDoubleFunction<ParameterContainer> benchmark) {
+  GridParameterOptimizer(double step, Consumer<ParameterContainer> benchmark) {
     super(benchmark);
     this.step = step;
     current = new ParameterContainer(0., 0., 0., 0.);
@@ -14,8 +14,8 @@ class GridParameterOptimizer extends BaseParameterOptimizer {
 
   @Override
   public void iterate() {
+    append(current);
     current = current.next(step);
     if (current == null) done = true;
-    else append(current);
   }
 }
