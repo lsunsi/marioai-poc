@@ -1,13 +1,21 @@
 package main;
 
 import burlap.behavior.policy.EpsilonGreedy;
+import burlap.behavior.singleagent.learning.LearningAgent;
 import burlap.behavior.functionapproximation.sparse.LinearVFA;
 import burlap.behavior.functionapproximation.sparse.tilecoding.TilingArrangement;
 import burlap.behavior.functionapproximation.sparse.tilecoding.TileCodingFeatures;
 import burlap.behavior.singleagent.learning.tdmethods.vfa.GradientDescentSarsaLam;
 
-class MarioFuncSarsa {
-  final static GradientDescentSarsaLam generate(MarioDomain domain, double alpha, double gamma, double epsilon, double lambda) {
+class MarioFuncSarsaGenerator extends BaseMarioAgentGenerator {
+
+  MarioFuncSarsaGenerator(MarioDomain domain, double alpha, double gamma, double epsilon, double lambda) {
+    super(domain, alpha, gamma, epsilon, lambda);
+  }
+
+
+  @Override
+  public LearningAgent generate() {
     TileCodingFeatures tiling = new TileCodingFeatures(new MarioFeatures());
     double[] features = new MarioFeatures().features(MarioSample.initialState);
     for (int i=0; i<features.length; i++) features[i] = 0.5;

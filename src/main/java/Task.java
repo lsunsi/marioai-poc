@@ -41,10 +41,11 @@ class Task {
     } return rewards;
   }
 
-  double benchmark(LearningAgent[] agents, int episodes) {
+  double benchmark(MarioAgentGenerator gen, int sessions, int episodes) {
     double reward = 0;
-    for (int i=0; i<agents.length; i++) {
-      for (double r : train(agents[i], episodes)) {
+    for (int i=0; i<sessions; i++) {
+      LearningAgent agent = gen.generate();
+      for (double r : train(agent, episodes)) {
         reward += r;
       }
     } return reward / episodes;
