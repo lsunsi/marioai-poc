@@ -3,19 +3,20 @@ package main;
 import java.util.function.Consumer;
 
 class GridParameterOptimizer extends BaseParameterOptimizer {
-  ParameterContainer current;
-  double step;
+  ParameterContainer current, low, high, step;
 
-  GridParameterOptimizer(double step, Consumer<ParameterContainer> benchmark) {
+  GridParameterOptimizer(ParameterContainer low, ParameterContainer high, ParameterContainer step, Consumer<ParameterContainer> benchmark) {
     super(benchmark);
+    this.low = low;
+    this.high = high;
     this.step = step;
-    current = new ParameterContainer(0., 0., 0., 0.);
+    current = low;
   }
 
   @Override
   public void iterate() {
     append(current);
-    current = current.next(step);
+    current = current.next(low, high, step);
     if (current == null) done = true;
   }
 }

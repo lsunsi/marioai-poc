@@ -23,7 +23,10 @@ class Main {
     int sessions = 3;
     int episodes = 1000;
 
-    ParameterOptimizer po = new GridParameterOptimizer(0.5,
+    ParameterOptimizer po = new GridParameterOptimizer(
+      new ParameterContainer(.05, .85, .00, .65),
+      new ParameterContainer(.15, .95, .05, .75),
+      new ParameterContainer(.01, .01, .01, .01),
       pc -> {
         pc.fitness = task.benchmark(new MarioFuncSarsaGenerator(
           task.domain, pc.alpha, pc.gamma, pc.epsilon, pc.lambda

@@ -11,33 +11,20 @@ class ParameterContainer {
     this.lambda = lambda;
   }
 
-  ParameterContainer[] neighbors(double step) {
-    return new ParameterContainer[] {
-      alpha+step > 1 ? null   : new ParameterContainer(alpha+step, gamma, epsilon, lambda),
-      alpha-step < 0 ? null   : new ParameterContainer(alpha-step, gamma, epsilon, lambda),
-      gamma+step > 1 ? null   : new ParameterContainer(alpha, gamma+step, epsilon, lambda),
-      gamma-step < 0 ? null   : new ParameterContainer(alpha, gamma-step, epsilon, lambda),
-      epsilon+step > 1 ? null : new ParameterContainer(alpha, gamma, epsilon+step, lambda),
-      epsilon-step < 0 ? null : new ParameterContainer(alpha, gamma, epsilon-step, lambda),
-      lambda+step > 1 ? null  : new ParameterContainer(alpha, gamma, epsilon, lambda+step),
-      lambda-step < 0 ? null  : new ParameterContainer(alpha, gamma, epsilon, lambda-step)
-    };
-  }
-
-  ParameterContainer next(double step) {
+  ParameterContainer next(ParameterContainer low, ParameterContainer high, ParameterContainer step) {
     ParameterContainer next = new ParameterContainer(alpha, gamma, epsilon, lambda);
 
-    next.alpha += step;
-    if (next.alpha > 1) {
-      next.alpha = 0;
-      next.gamma += step;
-      if (next.gamma > 1) {
-        next.gamma = 0;
-        next.epsilon += step;
-        if (next.epsilon > 1) {
-          next.epsilon = 0;
-          next.lambda += step;
-          if (next.lambda > 1) {
+    next.alpha += step.alpha;
+    if (next.alpha > high.alpha) {
+      next.alpha = low.alpha;
+      next.gamma += step.gamma;
+      if (next.gamma > high.gamma) {
+        next.gamma = low.gamma;
+        next.epsilon += step.epsilon;
+        if (next.epsilon > high.epsilon) {
+          next.epsilon = low.epsilon;
+          next.lambda += step.lambda;
+          if (next.lambda > high.lambda) {
             return null;
           }
         }
