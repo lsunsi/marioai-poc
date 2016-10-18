@@ -4,20 +4,27 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 class RandomParameterOptimizer extends BaseParameterOptimizer {
+  ParameterContainer low, high;
   Random random;
 
-  RandomParameterOptimizer(Consumer<ParameterContainer> benchmark) {
+  RandomParameterOptimizer(ParameterContainer low, ParameterContainer high, Consumer<ParameterContainer> benchmark) {
     super(benchmark);
-    random = new Random();
+    this.random = new Random();
+    this.high = high;
+    this.low = low;
+  }
+
+  double random(double low, double high) {
+    return low + random.nextDouble() * (high - low);
   }
 
   @Override
   public void iterate() {
     append(new ParameterContainer(
-      random.nextDouble(),
-      random.nextDouble(),
-      random.nextDouble(),
-      random.nextDouble()
+      random(low.alpha, high.alpha),
+      random(low.gamma, high.gamma),
+      random(low.epsilon, high.epsilon),
+      random(low.lambda, high.lambda)
     ));
   }
 }
